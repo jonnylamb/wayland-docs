@@ -1,0 +1,57 @@
+#from itertools import groupby
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" "">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+ <head>
+  <title>Full Index</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  <link rel="shortcut icon" type="image/png" media="all" href="favicon.png" />
+ </head>
+
+#set $star = []
+#for $item in $protocol.everything.values()
+ #echo $star.append(($item.name, $item))
+ #slurp
+#end for
+#echo $star.sort(key = lambda t: t[0])
+## t[0].name())
+#slurp
+## one use iterators...
+#set $groups = [ (l, list(g)) for l, g in (groupby($star, key = lambda t: t[0][0].upper())) ]
+ #set $letters = set(map(lambda t: t[0], groups))
+
+ <body>
+  <div class="header">
+   <h1>Full Index</h1>
+   <a href="index.html">Interface Index</a>
+   (<a href="interfaces.html">Compact</a>)
+   #for $a in map(chr, xrange(ord('A'), ord('Z')+1))
+    #if $a in $letters
+     | <a href="#$a">$a</a>
+    #else
+     | $a
+    #end if
+   #end for
+  </div>
+
+  <div class="main">
+   <table class="summary">
+   #for l, g in $groups
+    <tr><th colspan="3"><a name="$l"></a>$l</th></tr>
+    #for $n in $g
+      <tr>
+      <td>
+       <a href="$n[1].get_url()" title="$n[1].get_title()">$n[0]</a>
+      </td>
+      <td>$n[1].get_type_name()</td>
+      <td>
+       #if $n[1].parent.__class__.__name__ == 'Interface': $n[1].parent.name
+      </td>
+     </tr>
+    #end for
+   #end for
+   <table>
+  </div>
+
+ </body>
+</html>

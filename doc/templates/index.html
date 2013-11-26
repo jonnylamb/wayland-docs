@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" "">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+ <head>
+  <title>$protocol.get_title()</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  <link rel="shortcut icon" type="image/png" media="all" href="favicon.png" />
+ </head>
+ <body>
+  <div class="header">
+   <h1>$protocol.get_title()</h1>
+   <a href="#interfaces">Interfaces</a>
+   (<a href="interfaces.html">Compact</a>)
+   | <a href="fullindex.html">Full Index</a>
+  </div>
+
+  <div class="main">
+  <div class="legal">
+   <ul class="copyrights">
+    #for copyright in $protocol.get_copyrights()
+     <li>$copyright</li>
+    #end for
+   </ul>
+
+    #for license in $protocol.get_licenses()
+      <p>$license</p>
+    #end for
+  </div>
+
+  <a name="interfaces"></a>
+  <h3>Interfaces</h3>
+  <ul>
+  #for $iface in $protocol.interfaces
+    <li><a href="$iface.get_url()">$iface.name</a> &mdash; $iface.get_summary()</li>
+  #end for
+  </ul>
+
+  </div>
+ </body>
+</html>

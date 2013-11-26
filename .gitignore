@@ -1,0 +1,9 @@
+.*.sw?
+*.pyc
+/doc/*.html
+/doc/wayland
+/doc/weston
+/tmp
+.\#*
+\#*\#
+*~

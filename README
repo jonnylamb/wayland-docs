@@ -1,0 +1,21 @@
+Builds HTML documentation for the Wayland protocol and protocol
+extensions.
+
+Usage:
+
+  1. Clone the wayland-docs repository in the same directory as the
+     wayland and weston repositories (e.g. ~/src/)
+
+  2. Call 'make'.
+
+  3. Follow the URLs for the HTML documentation.
+
+Notes:
+
+This is a heavily modified version the telepathy-spec parser:
+
+    http://cgit.freedesktop.org/telepathy/telepathy-spec/
+
+Unfortunately the XML files are too radically different to be able to
+share parsing code without it being much more complicated or less
+smart.

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" "">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+ <head>
+  <title>$interface.name &mdash; $protocol.get_title()</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  <link rel="shortcut icon" type="image/png" media="all" href="favicon.png" />
+  <script src="jquery.min.js"></script>
+ </head>
+ <body>
+  <div class="header">
+  <h1>Interface <abbr title='$interface.name'>$interface.name</abbr></h1>
+   <a href="index.html">Interface Index</a>
+   (<a href="interfaces.html">Compact</a>)
+   | <a href="#summary">Summary</a>
+   #if $interface.description: | <a href="#description">Description</a>
+   #if $interface.refs: | <a href="#refs">References</a>
+   #if $interface.requests: | <a href="#requests">Requests</a>
+   #if $interface.events: | <a href="#events">Events</a>
+   #if $interface.enums: | <a href="#enums">Enums</a>
+  </div>
+  <div class="main">
+
+    #if $interface.requests or $interface.events or $interface.enums
+    <div class="summary">
+     <a name="summary"></a>
+     #if $interface.requests
+     <h3>Requests</h3>
+     <table class="summary">
+      #for $request in $interface.requests
+       <tr>
+       <td><a href="$request.get_url()">$request.name</a></td>
+       <td>($request.get_args())</td>
+      </tr>
+      #end for
+     </table>
+     #end if
+
+     #if $interface.events
+     <h3>Events</h3>
+     <table class="summary">
+      #for $event in $interface.events
+       <tr>
+       <td><a href="$event.get_url()">$event.name</a></td>
+       <td>($event.get_args())</td>
+      </tr>
+      #end for
+     </table>
+    #end if
+
+     #if $interface.enums
+     <h3>Enums</h3>
+     <table class="summary">
+      #for $enum in $interface.enums
+       <tr>
+       <td><a href="$enum.get_url()">$enum.name</a></td>
+      </tr>
+      #end for
+     </table>
+    #end if
+
+   </div>
+   #end if
+
+   #if $interface.description
+    <a name="description"></a>
+    <h3>Description</h3>
+    $interface.get_description()
+   #end if
+
+   #if $interface.refs
+    <a name="refs"></a>
+    <h3>References</h3>
+    <p>This interface is referenced by:</p>
+    <ul>
+    #for $ref in $interface.refs
+     <li><a href="$ref.get_url()" title="$ref.get_title()">$ref.get_full_name()</a></li>
+    #end for
+    </ul>
+   #end if
+
+   #if $interface.requests
+   <div class="outset methods method">
+    <a name="requests"></a>
+    <h1>Requests</h1>
+    #for $request in $interface.requests
+    <div class="inset method">
+     <a name="$request.get_anchor()"></a>
+     <span class="permalink">(<a href="$request.get_url()">Permalink</a>)</span>
+     <h2>$request.name</h2>
+
+     #if $request.since
+     <div class="annotation added">Added in version $request.since</div>
+     #end if
+
+     #if $request.args
+     <div class="indent">
+      <h3>Parameters</h3>
+      <ul>
+      #for $arg in $request.args
+       <li>
+        $arg.name &mdash; $arg.type
+        #if $arg.get_type(): (<a href="$arg.get_type_url()" title="$arg.get_type_title()">$arg.get_type().name</a>)
+       </li>
+      #end for
+      </ul>
+     </div>
+     #end if
+
+     $request.get_description()
+
+    </div>
+    #end for
+   </div>
+   #end if
+
+   #if $interface.events
+   <div class="outset signals signal">
+    <a name="events"></a>
+    <h1>Events</h1>
+    #for $event in $interface.events
+    <div class="inset signal">
+     <a name="$event.get_anchor()"></a>
+     <span class="permalink">(<a href="$event.get_url()">Permalink</a>)</span>
+     <h2>$event.name</h2>
+
+     #if $event.since
+     <div class="annotation added">Added in version $event.since</div>
+     #end if
+
+     #if $event.args
+     <div class="indent">
+      <h3>Parameters</h3>
+      <ul>
+      #for $arg in $event.args
+       <li>
+       $arg.name &mdash; $arg.type
+       #if $arg.get_type(): (<a href="$arg.get_type_url()" title="$arg.get_type_title()">$arg.get_type().name</a>)
+       </li>
+       $arg.get_description()
+      #end for
+      </ul>
+     </div>
+     #end if
+
+     $event.get_description()
+    </div>
+    #end for
+   </div>
+   #end if
+
+   #if $interface.enums
+   <div class="outset types type">
+    <a name="emums"></a>
+    <h1>Enums</h1>
+    #for enum in $interface.enums
+     <div class="inset type">
+      <a name="enum.get_anchor()"></a>
+      <span class="permalink">$enum.name (<a href="$enum.get_url()">Permalink</a>)</span>
+      <h2>$enum.name</h2>
+
+      #if $enum.since
+      <div class="annotation added">Added in version $enum.since</div>
+      #end if
+
+      $enum.get_description()
+      $enum.get_breakdown()
+     </div>
+    #end for
+   </div>
+   #end if
+   </div>
+
+ </body>
+</html>

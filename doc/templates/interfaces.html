@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" "">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+ <head>
+  <title>$protocol.get_title()</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  <link rel="shortcut icon" type="image/png" media="all" href="favicon.png" />
+ </head>
+ <body>
+  <div class="header">
+   <h1>$protocol.get_title()</h1>
+   <a href="index.html">Full</a>
+   | <a href="fullindex.html">Full Index</a>
+  </div>
+
+  <div class="main">
+
+  <a name="interfaces"></a>
+  <h3>Interfaces</h3>
+  <ul>
+  #for $interface in $protocol.interfaces
+    <li>
+    <a href="$interface.get_url()">$interface.name</a> &mdash; $interface.get_summary()
+   </li>
+  #end for
+  </ul>
+
+  </div>
+ </body>
+</html>
