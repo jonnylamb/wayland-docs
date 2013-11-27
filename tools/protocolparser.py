@@ -168,36 +168,56 @@ class Base(object):
         # remove old text node
         node.removeChild(node.childNodes[0])
 
+        def add_text_node(element, words, padding=False):
+            if not words:
+                return
+
+            if padding:
+                words += ' '
+
+            text = ' '.join(words)
+            t = dom.createTextNode(text)
+            element.appendChild(t)
+
+        # add anchor tags for stuff we can link to
+        def add_wl_links(paragraph, text):
+            words = text.split()
+            punctuation = '.,!"\''
+
+            current = []
+            for i, word in enumerate(words):
+                if not word.startswith('wl_'):
+                    current += [word]
+                    continue
+
+                ending = ''
+                if not word[-1].isalpha() and word[-1] in punctuation:
+                    ending = word[-1]
+                    word = word[:-1]
+
+                t = protocol.lookup(word)
+                if t is None:
+                    current += [word + ending]
+                else:
+                    add_text_node(p, current, len(current) > 0)
+                    current = []
+
+                    a = dom.createElement('a')
+                    a.setAttribute('href', t.get_url())
+                    add_text_node(a, [word])
+                    p.appendChild(a)
+
+                    current += [ending]
+
+            add_text_node(p, current)
+
         # add new paragraph nodes
         for text in [' '.join(x) for x in paragraphs]:
             p = dom.createElement('p')
-            t = dom.createTextNode(text)
-            p.appendChild(t)
+            add_wl_links(p, text)
             node.appendChild(p)
 
-        # all further mangling writes in html directly (eugh)
-        text = node.toxml().encode('ascii', 'xmlcharrefreplace')
-
-        # autolink mentions of wl_*
-        words = text.split()
-        punctuation = '.,!"\''
-
-        for i, wl in enumerate(words):
-            if not wl.startswith('wl_'):
-                continue
-
-            ending = ''
-            if not wl[-1].isalpha() and wl[-1] in punctuation:
-                ending = wl[-1]
-                wl = wl[:-1]
-
-            t = protocol.lookup(wl)
-            if t is None:
-                continue
-
-            words[i] = '<a href=\'%s\'>%s</a>'  % (t.get_url(), wl) + ending
-
-        return ' '.join(words)
+        return node.toxml().encode('ascii', 'xmlcharrefreplace')
 
     def get_title(self):
         return '%s %s' % (self.get_type_name(), self.name)
