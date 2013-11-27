@@ -24,6 +24,7 @@
 
 import os
 import sys
+import itertools
 import xml.dom, xml.dom.minidom
 
 class UnknownType(Exception): pass
@@ -149,11 +150,33 @@ class Base(object):
             node.removeAttribute('summary')
             node.setAttribute('class', 'docstring')
 
-            text = node.toxml().encode('ascii', 'xmlcharrefreplace')
-            return self.convert_to_html(text)
+            return self.convert_to_html(node)
 
-    def convert_to_html(self, text):
+    def convert_to_html(self, node):
         protocol = self.get_protocol()
+        dom = protocol.document
+
+        lines = [s.strip() for s in getText(node).split('\n')]
+
+        # get rid of rubbish at beginning and end
+        while not lines[0]: del lines[0]
+        while not lines[-1]: del lines[-1]
+
+        # split lines by empty elements
+        paragraphs = [list(group) for k, group in itertools.groupby(lines, bool) if k]
+
+        # remove old text node
+        node.removeChild(node.childNodes[0])
+
+        # add new paragraph nodes
+        for text in [' '.join(x) for x in paragraphs]:
+            p = dom.createElement('p')
+            t = dom.createTextNode(text)
+            p.appendChild(t)
+            node.appendChild(p)
+
+        # all further mangling writes in html directly (eugh)
+        text = node.toxml().encode('ascii', 'xmlcharrefreplace')
 
         # autolink mentions of wl_*
         words = text.split()
