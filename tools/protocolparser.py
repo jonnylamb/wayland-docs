@@ -173,8 +173,6 @@ class Base(object):
                 continue
 
             words[i] = '<a href=\'%s\'>%s</a>'  % (t.get_url(), wl) + ending
-            #wls.replace(wl, '<a href=\'%s\'>%s</a>'  % (t.get_url(), wl))
-            #text = text.replace(wl, '<a href=\'%s\'>%s</a>'  % (t.get_url(), wl))
 
         return ' '.join(words)
 
