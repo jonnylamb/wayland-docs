@@ -24,7 +24,10 @@
 
 import os
 import sys
+
+import bisect
 import itertools
+
 import xml.dom, xml.dom.minidom
 
 class UnknownType(Exception): pass
@@ -95,6 +98,7 @@ class Base(object):
         self.description = getOnlyChildByName(dom, 'description')
 
         self.refs = []
+        self.constructors = []
 
         for child in dom.childNodes:
             if (child.nodeType == dom.TEXT_NODE and
@@ -421,7 +425,10 @@ class Protocol(object):
                     if t is None:
                         continue
 
-                    t.refs.append(item)
+                    if arg.type == 'new_id':
+                        bisect.insort(t.constructors, item)
+                    else:
+                        bisect.insort(t.refs, item)
 
         # get some extra bits for the HTML
         node = dom.getElementsByTagNameNS(None, 'protocol')[0]

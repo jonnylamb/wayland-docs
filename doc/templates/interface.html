@@ -68,15 +68,25 @@
     $interface.get_description()
    #end if
 
-   #if $interface.refs
+   #if $interface.refs or $interface.constructors
     <a name="refs"></a>
     <h3>References</h3>
+    #if $interface.constructors
+    <p>This object is constructed by:</p>
+    <ul>
+    #for $ref in $interface.constructors
+     <li><a href="$ref.get_url()" title="$ref.get_title()">$ref.get_full_name()</a></li>
+    #end for
+    </ul>
+    #end if
+    #if $interface.refs
     <p>This interface is referenced by:</p>
     <ul>
     #for $ref in $interface.refs
      <li><a href="$ref.get_url()" title="$ref.get_title()">$ref.get_full_name()</a></li>
     #end for
     </ul>
+    #end if
    #end if
 
    #if $interface.requests
