@@ -477,6 +477,8 @@ def parse(filename, title):
         for n in os.listdir(filename):
             if not n.endswith('.xml'):
                 continue
+            if n.startswith('.'):
+                continue
 
             d = xml.dom.minidom.parse(os.path.join(filename, n))
             p = getOnlyChildByName(d, 'protocol')
