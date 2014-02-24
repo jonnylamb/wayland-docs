@@ -19,6 +19,8 @@ $(GENERATED_FILES): $(XMLS) tools/doc-generator.py tools/protocolparser.py $(TEM
 	install -d $$dir; \
 	$(PYTHON) tools/doc-generator.py ../$$project/protocol $$dir $$project
 
+upload: all
+	scp -r doc/weston doc/wayland dhansak:public_html/
 
 all: $(GENERATED_FILES)
 	@echo "Your protocol HTML starts at:"
@@ -37,4 +39,5 @@ clean:
     all \
     clean \
     wayland \
-    weston
+    weston \
+    upload
