@@ -12,12 +12,21 @@ GENERATED_FILES = \
 wayland: doc/wayland/index.html
 weston: doc/weston/index.html
 
-$(GENERATED_FILES): $(XMLS) tools/doc-generator.py tools/protocolparser.py $(TEMPLATES)
+xml/wayland/wayland.xml:
+	mkdir -p xml/wayland
+	wget -nc "http://cgit.freedesktop.org/wayland/wayland/plain/protocol/wayland.xml" -O $@
+
+# I can't believe this is easier than doing something with the git repository.
+xml/weston/index.html:
+	mkdir -p xml/weston
+	wget -nc -r -l 1 -nH --cut-dirs=4 "http://cgit.freedesktop.org/wayland/weston/plain/protocol/" --directory-prefix=xml/weston
+
+$(GENERATED_FILES): xml/wayland/wayland.xml xml/weston/index.html tools/doc-generator.py tools/protocolparser.py $(TEMPLATES)
 	@dir=`dirname $@`; \
 	project=`basename $$dir`; \
 	rm -rf $$dir; \
 	install -d $$dir; \
-	$(PYTHON) tools/doc-generator.py ../$$project/protocol $$dir $$project
+	$(PYTHON) tools/doc-generator.py xml/$$project $$dir $$project
 
 upload: all
 	scp -r doc/weston doc/wayland dhansak:public_html/
@@ -31,6 +40,7 @@ all: $(GENERATED_FILES)
 	@echo
 
 clean:
+	rm -rf xml
 	rm -rf doc/wayland
 	rm -rf doc/weston
 	rm -rf tmp

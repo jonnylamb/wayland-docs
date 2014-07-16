@@ -3,10 +3,10 @@ extensions.
 
 Usage:
 
-  1. Clone the wayland-docs repository in the same directory as the
-     wayland and weston repositories (e.g. ~/src/)
+  1. Clone the wayland-docs repository.
 
-  2. Call 'make'.
+  2. Call 'make'. Ensure you have internet access so the protocol xml files
+     can be downloaded.
 
   3. Follow the URLs for the HTML documentation.
 

@@ -4,6 +4,7 @@
 /doc/wayland
 /doc/weston
 /tmp
+/xml
 .\#*
 \#*\#
 *~
