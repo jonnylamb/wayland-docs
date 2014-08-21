@@ -105,8 +105,13 @@ class Base(object):
         for child in dom.childNodes:
             if (child.nodeType == dom.TEXT_NODE and
                     child.data.strip() != ''):
-                raise BrokenHTML('Text found in node %s of %s:\n\n%s' %
-                    (self.__class__.__name__, self.parent, child.data.strip()))
+
+                # http://lists.freedesktop.org/archives/wayland-devel/2014-February/013428.html
+                if self.description is None:
+                    self.description = child.data.strip()
+                else:
+                    raise BrokenHTML('Text found in node %s of %s:\n\n%s' %
+                        (self.__class__.__name__, self.parent, child.data.strip()))
             elif child.nodeType == dom.ELEMENT_NODE:
                 if child.tagName in ('p', 'em', 'strong', 'ul', 'li', 'dl',
                         'a', 'tt', 'code'):
@@ -143,7 +148,10 @@ class Base(object):
             return ''
         else:
             if getText(self.description) == '':
-                summary = self.description.getAttribute('summary')
+                if isinstance(self.description, unicode) and self.description != '':
+                    summary = self.description
+                else:
+                    summary = self.description.getAttribute('summary')
                 if summary != '':
                     return '<div class=\'docstring\'>%s</div>' % summary
                 else:
