@@ -46,6 +46,8 @@ def getText(dom):
             return ''
     except IndexError:
         return ''
+    except AttributeError:
+        return ''
 
 def getChildrenByName(dom, name):
     return filter(lambda n: n.nodeType == n.ELEMENT_NODE and \
