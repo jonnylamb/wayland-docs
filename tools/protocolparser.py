@@ -378,7 +378,7 @@ class Enum(Base):
         str += '<ul>\n'
         for entry in self.entries:
             str += '<li>%s (%s)</li>\n' % (entry.name, entry.value)
-            str += '<div class=\'docstring\'>%s</div>' % entry.summary
+            str += '<div class=\'docstring\'>%s</div>' % entry.get_description()
         str += '</ul>\n'
 
         return str
