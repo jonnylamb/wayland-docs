@@ -12,16 +12,16 @@ GENERATED_FILES = \
 wayland: doc/wayland/index.html
 weston: doc/weston/index.html
 
-xml/wayland/wayland.xml:
-	mkdir -p xml/wayland
-	wget -nc "http://cgit.freedesktop.org/wayland/wayland/plain/protocol/wayland.xml" -O $@
+# symlinked because it's easier as that's what the tp-spec script expects
+xml/wayland:
+	mkdir -p xml
+	ln -s $$(pwd)/../wayland/protocol xml/wayland
 
-# I can't believe this is easier than doing something with the git repository.
-xml/weston/index.html:
-	mkdir -p xml/weston
-	wget -nc -r -l 1 -nH --cut-dirs=4 "http://cgit.freedesktop.org/wayland/weston/plain/protocol/" --directory-prefix=xml/weston
+xml/weston:
+	mkdir -p xml
+	ln -s $$(pwd)/../weston/protocol xml/weston
 
-$(GENERATED_FILES): xml/wayland/wayland.xml xml/weston/index.html tools/doc-generator.py tools/protocolparser.py $(TEMPLATES)
+$(GENERATED_FILES): $(XMLS) xml/wayland xml/weston tools/doc-generator.py tools/protocolparser.py $(TEMPLATES)
 	@dir=`dirname $@`; \
 	project=`basename $$dir`; \
 	rm -rf $$dir; \
